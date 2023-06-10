@@ -1,2 +1,3 @@
-# tech-chronicles
+# Tech-Chronicles
+
 A tech blog built using the MVC paradigm on a Node Express MySQL Handlebars stack
