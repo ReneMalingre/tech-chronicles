@@ -1,21 +1,22 @@
-<!-- Homepage {{body}} template -->
-
-<!-- Show all blog posts -->
+<!-- Blog Post List -->
 <div class="container mt-5">
-    {{#if hasPosts}}
+    {{#if posts.length}}
     {{#each blogPosts as |post|}}
-
-    {{> blog-post post }}
-
+    <li>
+        {{> dashboard-blog-post post }}
+    </li>
     {{/each}}
     {{else}}
     <div class="alert alert-info">
         <h2>No posts yet. Start the conversation!</h2>
         {{#if loggedIn}}
-        <a href="/api/blogs/new" class="button">Create a post</a>
+        <a href="/dashboard/new" class="button">Create a post</a>
         {{else}}
         <a href="/login" class="button">Log in to create a post</a>
         {{/if}}
     </div>
     {{/if}}
 </div>
+
+<!-- dashboard script -->
+<script src="/assets/js/dashboard.js"></script>

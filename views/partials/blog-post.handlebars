@@ -1,0 +1,16 @@
+<!-- Display a single blog post with its comments -->
+<div class="card">
+    <div class="card-header bg-primary-subtle">
+        <h2 class="card-title text-dark">{{title}}</h2>
+        <h6 class="card-subtitle mb-2 text-muted">Author: {{user.username}} | Created: {{formatBlogDate created_at}}
+            {{#compareValues updated_at created_at}} | Updated:
+            {{formatBlogDate updated_at}} {{/compareValues}}
+        </h6>
+        <a href="#" class="card-link">Edit</a>
+        <a href="#" class="card-link">Delete</a>
+        <a href="#" class="card-link">Comment</a>
+    </div>
+    <div class="card-body">
+        <p class="card-text">{{content}}</p>
+    </div>
+</div>

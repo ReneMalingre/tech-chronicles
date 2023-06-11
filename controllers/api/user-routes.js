@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const { User } = require('../../models')
+const chalk = require('chalk')
 
 // CREATE new user
 router.post('/', async (req, res) => {
@@ -29,7 +30,8 @@ router.post('/', async (req, res) => {
 
     req.session.save(() => {
       req.session.loggedIn = true
-
+      req.session.user_id = dbUserData.id
+      req.session.username = dbUserData.username
       res.status(200).json(dbUserData)
     })
   } catch (err) {
@@ -40,35 +42,33 @@ router.post('/', async (req, res) => {
 
 // Login
 router.post('/login', async (req, res) => {
+  console.log(chalk.yellow('login route'))
   try {
-    const dbUserData = await User.findOne({
+    const userData = await User.findOne({
       where: {
         username: req.body.username
       }
     })
-
-    if (!dbUserData) {
+    if (!userData) {
       res
         .status(400)
         .json({ message: 'Incorrect username or password. Please try again!' })
       return
     }
-
-    const validPassword = await dbUserData.checkPassword(req.body.password)
-
+    const validPassword = await userData.checkPassword(req.body.password)
     if (!validPassword) {
       res
         .status(400)
         .json({ message: 'Incorrect username or password. Please try again!' })
       return
     }
-
     req.session.save(() => {
       req.session.loggedIn = true
-
+      req.session.user_id = userData.id
+      req.session.username = userData.username
       res
         .status(200)
-        .json({ user: dbUserData, message: 'You are now logged in!' })
+        .json({ user: userData, message: 'You are now logged in!' })
     })
   } catch (err) {
     console.log(err)
@@ -76,14 +76,22 @@ router.post('/login', async (req, res) => {
   }
 })
 
-// Logout
+// Log the user out
 router.post('/logout', (req, res) => {
+  // console.log(chalk.yellow('logout route'))
+  // if the user is logged in, destroy the session and redirect to the homepage
   if (req.session.loggedIn) {
-    req.session.destroy(() => {
-      res.status(204).end()
-    })
+    try {
+      req.session.destroy(() => {
+        res.status(200).redirect('/', { loggedIn: false })
+      })
+    } catch (err) {
+      console.log(err)
+      res.status(500).json(err)
+    }
   } else {
-    res.status(404).end()
+    // otherwise, redirect to the homepage
+    res.status(200).redirect('/', { loggedIn: false })
   }
 })
 
