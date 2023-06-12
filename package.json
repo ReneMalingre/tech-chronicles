@@ -1,6 +1,9 @@
 {
   "name": "tech-chronicles",
   "version": "1.0.0",
+  "engines": {
+    "node": "16.x"
+  },
   "description": "A tech blog built using the MVC paradigm",
   "main": "server.js",
   "scripts": {
