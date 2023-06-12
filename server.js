@@ -13,7 +13,7 @@ const app = express()
 const PORT = process.env.PORT || 3001
 
 const userSession = {
-  secret: process.env.SECRET,
+  secret: 'AB34CD56EF78GHIJ',
   cookie: {
     maxAge: 3600 * 1000, // 60 minutes
     httpOnly: true,
