@@ -1,20 +1,20 @@
-<!-- Comments -->
-<div class="ms-5 mt-2">
-    <h5>Comments:</h5>
-    <div class="card mt-2">
-        <div class="card-header">
-            <h6 class="card-subtitle mb-2 pt-1 text-muted">Author: Jane Doe | Created: 2023-06-11</h6>
+<!-- Comment -->
+<div class="ms-2 ms-lg-5">
+    <div class="card mt-0 mb-1">
+        <div class="card-header bg-warning-subtle">
+            <div class="row">
+                <div class="col-md-12 d-md-block d-lg-none">
+                    <h6 class="card-subtitle mb-1 pt-1 text-muted">Author: {{user.username}}</h6>
+                    <h6 class="card-subtitle mb-1 pt-1 text-muted">Created: {{formatBlogDate created_at}}</h6>
+                </div>
+                <div class="col-md-12 d-none d-lg-block">
+                    <h6 class="card-subtitle mb-1 pt-1 text-muted">Author: {{user.username}} | Created: {{formatBlogDate
+                        created_at}}</h6>
+                </div>
+            </div>
         </div>
         <div class="card-body">
-            <p class="card-text">This is a comment.</p>
-        </div>
-    </div>
-    <div class="card mt-2">
-        <div class="card-header">
-            <h6 class="card-subtitle mb-2 pt-1 text-muted">Author: Sam Smith | Created: 2023-06-11</h6>
-        </div>
-        <div class="card-body">
-            <p class="card-text">This is another comment.</p>
+            <p class="card-text">{{content}}.</p>
         </div>
     </div>
 </div>

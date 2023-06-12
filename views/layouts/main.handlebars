@@ -39,13 +39,17 @@
             </li>
             {{else}}
             <li class="nav-item"></li>
-            <a class="nav-link" id="login-link" href="">Login</a>
+            <a class="nav-link fw-semibold" id="login-link" href="">Login</a>
             </li>
             <li class="nav-item"></li>
             <a class="nav-link" id="signup-link" href="">Sign up</a>
             </li>
             {{/if}}
+            {{#if isDashboard}}
+            <li class="nav-item">
+              <a class="nav-link fw-semibold" id="new-post-link" href="">New Post</a>
             </li>
+            {{/if}}
           </ul>
         </div>
       </nav>
@@ -55,8 +59,6 @@
         <h6 class="text-end ms-3 me-3 pb-2 m ">{{username}}</h6>
         {{/if}}
       </div>
-
-
     </div>
   </header>
   <main>
@@ -68,14 +70,28 @@
   <!-- Footer -->
   <footer class="footer mt-3 pt-3 bg-dark-subtle text-dark">
     <div class="container text-center">
-      <div class="row">
-        <div class="col-12 col-md-6">
+      {{#if isDashboard}}
+      <div class="d-flex flex-column flex-md-row justify-content-between">
+        <div>
           <p>Tech Chronicles - a Blog</p>
         </div>
-        <div class="col-12 col-md-6">
+        <div mt-0>
+          <button type="button" class="btn btn-primary mt-0 mb-2" id="new-post-button">New Post</button>
+        </div>
+        <div>
           <p>© 2023 René Malingré</p>
         </div>
       </div>
+      {{else}}
+      <div class="d-flex flex-column flex-md-row justify-content-between">
+        <div>
+          <p>Tech Chronicles - a Blog</p>
+        </div>
+        <div>
+          <p>© 2023 René Malingré</p>
+        </div>
+      </div>
+      {{/if}}
     </div>
   </footer>
 
@@ -97,6 +113,24 @@
     </div>
   </div>
 
+  <!-- Confirmation Modal -->
+  <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmationModalLabel">Modal Title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body  bg-warning-subtle" id="confirmationModalBody">
+          Modal Body
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="confirm-no" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button type="button" id="confirm-yes" class="btn btn-primary">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
-
 </html>

@@ -1,6 +1,6 @@
+// Purpose: user routes
 const router = require('express').Router()
 const { User } = require('../../models')
-const chalk = require('chalk')
 
 // CREATE new user
 router.post('/', async (req, res) => {
@@ -20,14 +20,14 @@ router.post('/', async (req, res) => {
     }
   } catch (err) {
     console.log(err)
-    res.status(500).json(err)
+    res.status(500).json({ err, message: 'Error checking for existing user' })
   }
   try {
     const dbUserData = await User.create({
       username: req.body.username,
       password: req.body.password
     })
-
+    // save session
     req.session.save(() => {
       req.session.loggedIn = true
       req.session.user_id = dbUserData.id
@@ -36,13 +36,12 @@ router.post('/', async (req, res) => {
     })
   } catch (err) {
     console.log(err)
-    res.status(500).json(err)
+    res.status(500).json({ err, message: 'Error creating new user' })
   }
 })
 
 // Login
 router.post('/login', async (req, res) => {
-  console.log(chalk.yellow('login route'))
   try {
     const userData = await User.findOne({
       where: {
@@ -62,6 +61,7 @@ router.post('/login', async (req, res) => {
         .json({ message: 'Incorrect username or password. Please try again!' })
       return
     }
+    // save session
     req.session.save(() => {
       req.session.loggedIn = true
       req.session.user_id = userData.id
@@ -72,7 +72,7 @@ router.post('/login', async (req, res) => {
     })
   } catch (err) {
     console.log(err)
-    res.status(500).json(err)
+    res.status(500).json({ err, message: 'Error logging in' })
   }
 })
 

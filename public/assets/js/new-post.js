@@ -1,3 +1,5 @@
+// Initiated by: new-post.handlebars
+// validates and creates a new blog post
 async function newBlogPostHandler (event) {
   event.preventDefault()
 
@@ -20,7 +22,7 @@ async function newBlogPostHandler (event) {
       document.location.replace('/dashboard')
     } else {
       // eslint-disable-next-line no-undef
-      alertModal('Error creating new blog', data.statusText)
+      alertModal('Error creating new blog', data.message)
     }
   } else {
     // eslint-disable-next-line no-undef
@@ -30,3 +32,21 @@ async function newBlogPostHandler (event) {
 
 // event handler
 document.querySelector('#new-blog-post-form').addEventListener('submit', newBlogPostHandler)
+
+document.getElementById('cancel-button').addEventListener('click', (event) => {
+  event.preventDefault()
+  window.location.replace('/dashboard')
+}
+)
+
+// detect when the page is loaded and hide the new post button and menu link
+document.addEventListener('DOMContentLoaded', () => {
+  // disable the new post button and menu link
+  try {
+    document.getElementById('new-post-button').style.display = 'none'
+    document.getElementById('new-post-link').style.display = 'none'
+  } catch (err) {
+    // ignore
+  }
+}
+)

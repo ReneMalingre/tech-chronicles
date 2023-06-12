@@ -1,3 +1,4 @@
+// Direct API Routes to the proper files
 const router = require('express').Router()
 
 const userRoutes = require('./user-routes')

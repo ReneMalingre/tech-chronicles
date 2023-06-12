@@ -1,12 +1,19 @@
 // Utility Functions
 const { User, BlogPost, Comment } = require('../models')
-const chalk = require('chalk')
-const handlebars = require('handlebars')
+const Handlebars = require('handlebars')
 
-// get all blog posts
-async function allBlogPosts (userID = null) {
+// get all blog posts and their comments and user info
+async function allBlogPosts (userID = null, blogPostID = null) {
   // if a user ID is passed in, get only the posts for that user
-  const blogPostWhere = userID ? { user_id: userID } : {}
+  // if a blog post ID is passed in, get only that post
+  const blogPostWhere = {}
+  if (userID) {
+    blogPostWhere.user_id = userID
+  }
+  if (blogPostID) {
+    blogPostWhere.id = blogPostID
+  }
+
   try {
     const blogPostData = await BlogPost.findAll({
       attributes: [
@@ -32,6 +39,9 @@ async function allBlogPosts (userID = null) {
           ['user_id', 'commenter_id'],
           'created_at'
         ],
+        order: [
+          ['created_at', 'ASC']
+        ],
         // and the user who made the comment
         include: {
           model: User,
@@ -48,7 +58,6 @@ async function allBlogPosts (userID = null) {
 
     // turn the posts into plain JS objects
     const blogPosts = blogPostData.map(post => post.get({ plain: true }))
-    console.log(chalk.green('blogPosts:' + JSON.stringify(blogPosts)))
     return blogPosts
   } catch (err) {
     console.log(err)
@@ -76,24 +85,35 @@ function addLoggedInToEveryObject (arrayOfObjects, loggedIn) {
 }
 
 // get the blog posts and add the current user and logged in status to each object
-async function allBlogPostsWithAddons (userID = null, session) {
-  let blogPosts = await allBlogPosts(userID)
+async function allBlogPostsWithAddons (userID = null, blogPostID = null, session) {
+  let blogPosts = await allBlogPosts(userID, blogPostID)
   blogPosts = addCurrentUserToEveryObject(blogPosts, session.user_id)
   blogPosts = addLoggedInToEveryObject(blogPosts, session.loggedIn)
   return blogPosts
 }
 
-// Handlebars custom helper to compare two values
+// Handlebars custom helper to compare two values. Fancy! Lots of googling...
 function compareValues (value1, value2, options) {
-  console.log(chalk.yellow('value1: ' + value1 + ' value2: ' + value2))
-  if (value1 === value2) {
-    return options.fn(this) // values are the same, execute the content inside the block
+  // compare dates
+  if (value1 instanceof Date && value2 instanceof Date) {
+    // Get the time difference in milliseconds (some databases have unique timestamp precision)
+    const diff = Math.abs(value1.getTime() - value2.getTime())
+    if (diff < 1000) {
+      return options.fn(this) // values are the same, execute the content inside the block
+    } else {
+      return options.inverse(this) // values are different, execute the content inside the else block
+    }
   } else {
-    return options.inverse(this) // values are different, execute the content inside the else block
+    // compare other things
+    if (value1 === value2) {
+      return options.fn(this) // values are the same, execute the content inside the block
+    } else {
+      return options.inverse(this) // values are different, execute the content inside the else block
+    }
   }
 }
-
-handlebars.registerHelper('compareValues', compareValues)
+// register the helper with Handlebars
+Handlebars.registerHelper('compareValues', compareValues)
 
 // function to get the date in a format that can be displayed in the UI
 function formatBlogDate (date) {
@@ -102,7 +122,7 @@ function formatBlogDate (date) {
     return date
   }
   const dateObj = new Date(date)
-  const month = dateObj.getMonth() + 1
+  const month = dateObj.getMonth() + 1 // months are zero indexed. How stupid!
   const day = dateObj.getDate()
   const year = dateObj.getFullYear()
   let hour = dateObj.getHours()

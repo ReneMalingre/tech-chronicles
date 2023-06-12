@@ -1,19 +1,25 @@
 <!-- Comment Form -->
+
+<!-- Show Blog post at top -->
+<div class="container mt-2">
+    {{#each blogPost as |blogPost|}}
+    {{> blog-post blogPost}}
+    {{/each}}
+</div>
 <div class="container mt-2">
     <div class="card">
         <div class="card-header bg-warning-subtle">
-            <h5 class="card-title text-dark ms-2 mt-2">Add Comment</h5>
+            <h5 class="card-title text-dark ms-2 mt-2">Add a Comment</h5>
         </div>
         <div class="card-body">
-            <p class="ms-2 mb-0">Blog Post: <span class="fw-medium fst-italic">{{blogPost.title}}</span></p>
-            <p class="ms-2 mb-0">Content: <span class="fw-light fst-italic">{{blogPost.content}}</span></p>
             <form id="new-comment-form">
                 <div class="form-group mt-0">
-                    <label for="comment">Type your Comment:</label>
+                    <label class="mt-0" for="comment">Type your Comment for this Post here:</label>
                     <textarea class="form-control" id="comment" rows="3" name="comment"></textarea>
                 </div>
                 <button type="submit" id="submit-button" data-blog-id="{{blogPostId}}" data-user-id="{{userId}}"
-                    class="btn btn-outline-secondary btn-sm mt-1">Post Comment</button>
+                    class="btn btn-secondary btn-sm mt-1">Post Comment</button>
+                <button type="button" id="cancel-button" class="btn btn-outline-secondary btn-sm mt-1">Cancel</button>
             </form>
         </div>
     </div>

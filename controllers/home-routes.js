@@ -1,14 +1,12 @@
+// The home routes handle the homepage, login, logout, and signup pages
 const router = require('express').Router()
-const { User, BlogPost, Comment } = require('../models')
-const withAuth = require('../utils/auth')
 const helpers = require('../utils/helpers')
-const chalk = require('chalk')
 
 // Display the homepage
 router.get('/', async (req, res) => {
   try {
     // get all blog posts and their comments, add user info to each post
-    const blogPosts = await helpers.allBlogPostsWithAddons(null, req.session)
+    const blogPosts = await helpers.allBlogPostsWithAddons(null, null, req.session)
 
     // pass the posts into the homepage template
     res.render('homepage', {
@@ -17,11 +15,12 @@ router.get('/', async (req, res) => {
       loggedIn: req.session.loggedIn,
       pageTitle: '- Home',
       hasPosts: blogPosts.length > 0,
-      username: req.session.username
+      username: req.session.username,
+      isDashboard: false
     })
   } catch (err) {
     console.log(err)
-    res.status(500).json(err)
+    res.status(500).json({ err, message: 'Error getting blog posts' })
   }
 })
 
@@ -41,7 +40,6 @@ router.get('/login', (req, res) => {
 
 // Log the user out
 router.get('/logout', (req, res) => {
-  console.log(chalk.yellow('logout route'))
   // if the user is logged in, destroy the session and redirect to the homepage
   if (req.session.loggedIn) {
     try {
@@ -50,7 +48,7 @@ router.get('/logout', (req, res) => {
       })
     } catch (err) {
       console.log(err)
-      res.status(500).json(err)
+      res.status(500).json({ err, message: 'Error logging out' })
     }
   } else {
     // otherwise, redirect to the homepage
@@ -70,30 +68,6 @@ router.get('/signup', (req, res) => {
     // send the page title to the template
     pageTitle: '- Sign Up'
   })
-})
-
-// Show the dashboard
-router.get('/dashboard', withAuth, async (req, res) => {
-  try {
-    console.log(chalk.yellow('dashboard route'))
-
-    // get all blog posts and their comments
-    const blogPosts = await helpers.allBlogPosts()
-    console.log(chalk.green('blogPosts in dashboard route:' + JSON.stringify(blogPosts)))
-
-    // pass the posts into the homepage template
-    res.render('dashboard', {
-      blogPosts,
-      // send the session variable (loggedIn) to the template
-      loggedIn: req.session.loggedIn,
-      pageTitle: '- Dashboard',
-      hasPosts: blogPosts.length > 0,
-      username: req.session.username
-    })
-  } catch (err) {
-    console.log(err)
-    res.status(500).json(err)
-  }
 })
 
 module.exports = router

@@ -1,25 +1,31 @@
 <!-- Display a single blog post with its comments -->
-<div class="card">
+<div class="card mb-2 blog-card" data-blog-id="{{id}}">
     <div class="card-header bg-primary-subtle">
-        <h2 class="card-title text-dark">{{title}}</h2>
-        <h6 class="card-subtitle mb-2 text-muted">Author: {{user.username}} | Created: {{formatBlogDate created_at}}
-            {{#compareValues updated_at created_at}} | Updated:
-            {{formatBlogDate updated_at}} {{/compareValues}}
-        </h6>
-        {{#if isCurrentUser}}
-        <a href="" id="edit-blog-{{id}}" data-blog-id="{{id}}" class="card-link blog-edit-link">Edit</a>
-        <a href="" id="delete-blog-{{id}}" data-blog-id="{{id}}" class="card-link blog-delete-link">Delete</a>
-        {{/if}}
-        {{#if loggedIn}}
-        <a href="" id="comment-blog-{{id}}" data-blog-id="{{id}}" data-user-id="{{currentUserID}}"
-            class="card-link blog-comment-link">Comment</a>
-        {{/if}}
-
+        <h4 class="card-title text-dark">{{title}}</h4>
+        <div class="row">
+            <div class="col-sm-12 d-sm-block d-md-none">
+                <h6 class="card-subtitle mb-2 text-muted">Author: {{user.username}}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">Created: {{formatBlogDate created_at}}</h6>
+                {{#compareValues updated_at created_at}}
+                {{else}}
+                <h6 class="card-subtitle mb-2 text-muted">Updated: {{formatBlogDate updated_at}}</h6>
+                {{/compareValues}}
+                </h6>
+            </div>
+            <div class="col-sm-12 d-none d-md-block">
+                <h6 class="card-subtitle mb-2 text-muted">Author: {{user.username}} | Created: {{formatBlogDate
+                    created_at}}
+                    {{#compareValues updated_at created_at}}{{else}} | Updated:
+                    {{formatBlogDate updated_at}} {{/compareValues}}
+                </h6>
+            </div>
+        </div>
     </div>
     <div class="card-body">
         <p class="card-text">{{content}}</p>
     </div>
-    {{#each comments as |comment|}}
-    {{> comment comment}}
-    {{/each}}
 </div>
+<!-- Show all Comments -->
+{{#each comments as |comment|}}
+{{> comment comment}}
+{{/each}}
