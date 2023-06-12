@@ -6,7 +6,8 @@ const signupFormHandler = async (event) => {
 
   if (username && password) {
     if (password.length < 12 || password.length > 64) {
-      alert('Password must be between 12 and 64 characters long.')
+      // eslint-disable-next-line no-undef
+      alertModal('Sign up failed', 'Password must be between 12 and 64 characters long.')
       return
     }
     const response = await fetch('/api/users', {
@@ -19,8 +20,13 @@ const signupFormHandler = async (event) => {
       // if successful, redirect to the homepage
       document.location.replace('/')
     } else {
-      alert('Failed to sign up.')
+      const data = await response.json()
+      // eslint-disable-next-line no-undef
+      alertModal('Sign up failed', data.message)
     }
+  } else {
+    // eslint-disable-next-line no-undef
+    alertModal('Sign up failed', 'Please enter a username and password.')
   }
 }
 

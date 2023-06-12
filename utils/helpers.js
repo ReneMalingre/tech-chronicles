@@ -56,6 +56,33 @@ async function allBlogPosts (userID = null) {
   }
 }
 
+function addCurrentUserToEveryObject (arrayOfObjects, currentUserID) {
+  // if the user is logged in, add a property to each object in the array
+  // to indicate whether the current user is the author of the object
+  arrayOfObjects.forEach(object => {
+    object.isCurrentUser = object.user_id === currentUserID
+    object.currentUserID = currentUserID
+  })
+  return arrayOfObjects
+}
+
+function addLoggedInToEveryObject (arrayOfObjects, loggedIn) {
+  // add a property to each object in the array
+  // to indicate whether the user is logged in
+  arrayOfObjects.forEach(object => {
+    object.loggedIn = loggedIn
+  })
+  return arrayOfObjects
+}
+
+// get the blog posts and add the current user and logged in status to each object
+async function allBlogPostsWithAddons (userID = null, session) {
+  let blogPosts = await allBlogPosts(userID)
+  blogPosts = addCurrentUserToEveryObject(blogPosts, session.user_id)
+  blogPosts = addLoggedInToEveryObject(blogPosts, session.loggedIn)
+  return blogPosts
+}
+
 // Handlebars custom helper to compare two values
 function compareValues (value1, value2, options) {
   console.log(chalk.yellow('value1: ' + value1 + ' value2: ' + value2))
@@ -92,4 +119,4 @@ function formatBlogDate (date) {
   return `${year}-${month}-${day} ${hour}:${minute} ${amOrPm}`
 }
 
-module.exports = { allBlogPosts, compareValues, formatBlogDate }
+module.exports = { allBlogPosts, compareValues, formatBlogDate, addCurrentUserToEveryObject, addLoggedInToEveryObject, allBlogPostsWithAddons }

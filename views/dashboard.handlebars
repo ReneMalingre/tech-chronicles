@@ -1,10 +1,8 @@
 <!-- Blog Post List -->
-<div class="container mt-5">
-    {{#if posts.length}}
+<div class="container mt-2">
+    {{#if hasPosts}}
     {{#each blogPosts as |post|}}
-    <li>
-        {{> dashboard-blog-post post }}
-    </li>
+    {{> dashboard-blog-post post }}
     {{/each}}
     {{else}}
     <div class="alert alert-info">

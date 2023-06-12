@@ -76,23 +76,4 @@ router.post('/login', async (req, res) => {
   }
 })
 
-// Log the user out
-router.post('/logout', (req, res) => {
-  // console.log(chalk.yellow('logout route'))
-  // if the user is logged in, destroy the session and redirect to the homepage
-  if (req.session.loggedIn) {
-    try {
-      req.session.destroy(() => {
-        res.status(200).redirect('/', { loggedIn: false })
-      })
-    } catch (err) {
-      console.log(err)
-      res.status(500).json(err)
-    }
-  } else {
-    // otherwise, redirect to the homepage
-    res.status(200).redirect('/', { loggedIn: false })
-  }
-})
-
 module.exports = router

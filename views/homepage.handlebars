@@ -1,11 +1,11 @@
 <!-- Homepage {{body}} template -->
 
 <!-- Show all blog posts -->
-<div class="container mt-5">
+<div class="container mt-2">
     {{#if hasPosts}}
     {{#each blogPosts as |post|}}
 
-    {{> blog-post post }}
+    {{> blog-post post}}
 
     {{/each}}
     {{else}}
@@ -19,3 +19,6 @@
     </div>
     {{/if}}
 </div>
+
+<!-- Homepage javascript -->
+<script src="/assets/js/homepage.js"></script>

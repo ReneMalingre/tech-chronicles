@@ -15,14 +15,16 @@ async function newBlogPostHandler (event) {
         'Content-Type': 'application/json'
       }
     })
-
+    const data = await response.json()
     if (response.ok) {
       document.location.replace('/dashboard')
     } else {
-      alert(response.statusText)
+      // eslint-disable-next-line no-undef
+      alertModal('Error creating new blog', data.statusText)
     }
   } else {
-    alert('Please enter a title and content for your blog post.')
+    // eslint-disable-next-line no-undef
+    alertModal('Error creating new blog', 'Please enter a title and content for your blog post.')
   }
 }
 

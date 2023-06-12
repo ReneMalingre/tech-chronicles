@@ -6,11 +6,20 @@
             {{#compareValues updated_at created_at}} | Updated:
             {{formatBlogDate updated_at}} {{/compareValues}}
         </h6>
-        <a href="#" class="card-link">Edit</a>
-        <a href="#" class="card-link">Delete</a>
-        <a href="#" class="card-link">Comment</a>
+        {{#if isCurrentUser}}
+        <a href="" id="edit-blog-{{id}}" data-blog-id="{{id}}" class="card-link blog-edit-link">Edit</a>
+        <a href="" id="delete-blog-{{id}}" data-blog-id="{{id}}" class="card-link blog-delete-link">Delete</a>
+        {{/if}}
+        {{#if loggedIn}}
+        <a href="" id="comment-blog-{{id}}" data-blog-id="{{id}}" data-user-id="{{currentUserID}}"
+            class="card-link blog-comment-link">Comment</a>
+        {{/if}}
+
     </div>
     <div class="card-body">
         <p class="card-text">{{content}}</p>
     </div>
+    {{#each comments as |comment|}}
+    {{> comment comment}}
+    {{/each}}
 </div>
