@@ -1,6 +1,8 @@
 // Initiated by: new-comment.handlebars
 async function newCommentHandler (event) {
   event.preventDefault()
+  // avoid double click
+  document.getElementById('submit-button').disabled = true
 
   const content = document.querySelector('#comment').value.trim()
   // get the data-blog-id attribute and data-user-id attribute from the button

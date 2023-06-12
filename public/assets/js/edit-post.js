@@ -1,6 +1,8 @@
 // Validates the edit post form and sends the request to the server
 async function editBlogPostHandler (event) {
   event.preventDefault()
+  // avoid double click
+  document.getElementById('save-post-button').disabled = true
 
   const title = document.querySelector('#title').value.trim()
   const content = document.querySelector('#content').value.trim()
@@ -42,6 +44,9 @@ document.getElementById('cancel-button').addEventListener('click', (event) => {
 // event handler for the delete button
 document.getElementById('delete-button').addEventListener('click', async (event) => {
   event.preventDefault()
+  // avoid double click
+  document.getElementById('delete-button').disabled = true
+
   // get confirmation from the user
   const blogId = document.getElementById('edit-blog-post-form').getAttribute('data-blog-id')
   if (!blogId) {

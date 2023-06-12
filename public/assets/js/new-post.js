@@ -2,6 +2,8 @@
 // validates and creates a new blog post
 async function newBlogPostHandler (event) {
   event.preventDefault()
+  // avoid double click
+  document.getElementById('save-post-button').disabled = true
 
   const title = document.querySelector('#title').value.trim()
   const content = document.querySelector('#content').value.trim()
