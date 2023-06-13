@@ -98,7 +98,7 @@ Navigate to [http://localhost:3001/](http://localhost:3001/) in your browser to 
 
 4. **Signing up:** Select the sign-up option to create an account. Enter a username and password.
 
-![Sign up UI](docs/images/login.png)
+![Sign up UI](docs/images/signup.png)
 
 5. **Returning to the site:** On subsequent visits, select the sign-in option and input your username and password to access the site.
 
